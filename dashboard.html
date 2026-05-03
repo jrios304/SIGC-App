@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SIGC — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--navy:#0B1F3A;--teal:#0D7377;--teal2:#14A085;--white:#fff;--gray:#6B7280;--border:#E5E7EB;--red:#C0392B}
+    body{font-family:'DM Sans',sans-serif;background:#F0F4F8;min-height:100vh;display:flex}
+    .sidebar{width:256px;background:var(--navy);display:flex;flex-direction:column;padding:28px 0;flex-shrink:0}
+    .s-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .s-logo .nm{font-family:'DM Serif Display',serif;font-size:18px;color:#fff}
+    .s-logo .sb{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+    .s-nav{padding:20px 16px;flex:1;display:flex;flex-direction:column;gap:4px}
+    .ni{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.6);font-size:14px;font-weight:500;text-decoration:none;transition:background .2s,color .2s}
+    .ni:hover,.ni.active{background:rgba(13,115,119,.35);color:#fff}
+    .ni .ic{font-size:17px;width:22px;text-align:center}
+    .s-foot{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08)}
+    .uc{display:flex;align-items:center;gap:10px}
+    .ua{width:36px;height:36px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600}
+    .ui .un{font-size:13px;color:#fff;font-weight:500}
+    .ui .ur{font-size:11px;color:rgba(255,255,255,.4)}
+    .btn-out{margin-top:12px;width:100%;padding:9px;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.35);color:#e07070;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500;transition:background .2s}
+    .btn-out:hover{background:rgba(192,57,43,.3)}
+    main{flex:1;padding:36px 40px;overflow-y:auto}
+    .ph{margin-bottom:32px}
+    .ph h1{font-family:'DM Serif Display',serif;font-size:30px;color:var(--navy);margin-bottom:4px}
+    .ph p{font-size:14px;color:var(--gray)}
+    .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:32px}
+    .sc{background:var(--white);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--border)}
+    .sc .si{font-size:26px;margin-bottom:10px}
+    .sc .sv{font-family:'DM Serif Display',serif;font-size:30px;color:var(--navy)}
+    .sc .sl{font-size:12px;color:var(--gray);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+    .st{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);margin-bottom:16px}
+    .ag{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+    .ac{background:var(--white);border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--border);text-decoration:none;display:block;transition:transform .2s,box-shadow .2s}
+    .ac:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+    .ac .ai{font-size:26px;margin-bottom:10px}
+    .ac .at{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px}
+    .ac .ad{font-size:13px;color:var(--gray);line-height:1.5}
+    .tc{background:var(--white);border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse}
+    th{text-align:left;font-size:12px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:0 12px 14px;border-bottom:1px solid var(--border)}
+    td{padding:13px 12px;font-size:14px;color:var(--navy);border-bottom:1px solid var(--border)}
+    tr:last-child td{border-bottom:none}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(13,115,119,.12);color:var(--teal)}
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="s-logo"><div class="nm">🏥 SIGC</div><div class="sb">Gestión Clínica</div></div>
+  <nav class="s-nav">
+    <a class="ni active" href="dashboard.html" data-testid="nav-dashboard"><span class="ic">📊</span>Dashboard</a>
+    <a class="ni" href="registro-medico.html" data-testid="nav-medicos"><span class="ic">👨‍⚕️</span>Médicos</a>
+    <a class="ni" href="registro-paciente.html" data-testid="nav-pacientes"><span class="ic">🧑‍🤝‍🧑</span>Pacientes</a>
+    <a class="ni" href="registro-admin.html" data-testid="nav-admin"><span class="ic">⚙️</span>Administradores</a>
+  </nav>
+  <div class="s-foot">
+    <div class="uc">
+      <div class="ua" id="user-avatar">A</div>
+      <div class="ui"><div class="un" id="user-name">Admin</div><div class="ur">Super Admin</div></div>
+    </div>
+    <button class="btn-out" id="btn-logout" data-testid="btn-logout">Cerrar sesión</button>
+  </div>
+</div>
+<main>
+  <div class="ph">
+    <h1 id="welcome-msg">Bienvenido</h1>
+    <p>Panel de control del Sistema Integral de Gestión Clínica</p>
+  </div>
+  <div class="sg">
+    <div class="sc"><div class="si">👨‍⚕️</div><div class="sv" id="stat-med">0</div><div class="sl">Médicos</div></div>
+    <div class="sc"><div class="si">🧑‍🤝‍🧑</div><div class="sv" id="stat-pac">0</div><div class="sl">Pacientes</div></div>
+    <div class="sc"><div class="si">👤</div><div class="sv" id="stat-adm">0</div><div class="sl">Administradores</div></div>
+    <div class="sc"><div class="si">✅</div><div class="sv">100%</div><div class="sl">Sistema activo</div></div>
+  </div>
+  <p class="st">Acciones rápidas</p>
+  <div class="ag">
+    <a href="registro-medico.html" class="ac" data-testid="action-medico"><div class="ai">👨‍⚕️</div><div class="at">Registrar Médico</div><div class="ad">Agrega un nuevo profesional de salud.</div></a>
+    <a href="registro-paciente.html" class="ac" data-testid="action-paciente"><div class="ai">🧑‍🤝‍🧑</div><div class="at">Registrar Paciente</div><div class="ad">Ingresa datos de un nuevo paciente.</div></a>
+    <a href="registro-admin.html" class="ac" data-testid="action-admin"><div class="ai">⚙️</div><div class="at">Nuevo Admin</div><div class="ad">Crea una cuenta de administrador.</div></a>
+  </div>
+  <p class="st">Médicos registrados recientemente</p>
+  <div class="tc">
+    <table><thead><tr><th>Nombre</th><th>Especialidad</th><th>Tarjeta Prof.</th><th>Estado</th></tr></thead>
+    <tbody id="tbody-med"><tr><td colspan="4" style="color:#9CA3AF;text-align:center;padding:24px">No hay médicos registrados aún.</td></tr></tbody></table>
+  </div>
+</main>
+<script>
+  const user = JSON.parse(sessionStorage.getItem('sigc_user')||'null');
+  if (!user) { window.location.href='index.html'; }
+  document.getElementById('user-name').textContent = user?.name||'Admin';
+  document.getElementById('user-avatar').textContent = (user?.name||'A')[0].toUpperCase();
+  document.getElementById('welcome-msg').textContent = `Bienvenido, ${user?.name||'Administrador'}`;
+  const med = JSON.parse(localStorage.getItem('sigc_medicos')||'[]');
+  const pac = JSON.parse(localStorage.getItem('sigc_pacientes')||'[]');
+  const adm = JSON.parse(localStorage.getItem('sigc_admins')||'[]');
+  document.getElementById('stat-med').textContent = med.length;
+  document.getElementById('stat-pac').textContent = pac.length;
+  document.getElementById('stat-adm').textContent = adm.length;
+  if (med.length > 0) {
+    document.getElementById('tbody-med').innerHTML = med.slice(-5).reverse().map(m=>
+      `<tr><td>${m.nombre}</td><td>${m.especialidad}</td><td>${m.tarjeta}</td><td><span class="badge">Activo</span></td></tr>`).join('');
+  }
+  document.getElementById('btn-logout').addEventListener('click',()=>{ sessionStorage.clear(); window.location.href='index.html'; });
+</script>
+</body>
+</html>
