@@ -49,6 +49,21 @@
     .list-item .li-name{font-weight:600;margin-bottom:2px}
     .list-item .li-sub{color:var(--gray);font-size:12px}
     .empty-list{color:#9CA3AF;font-size:13px;text-align:center;padding:20px 0}
+    @media(max-width:768px){
+      body{flex-direction:column}
+      .sidebar{width:100%;flex-direction:row;align-items:center;padding:12px 16px;flex-wrap:wrap;gap:8px}
+      .s-logo{padding:0;border:none}
+      .s-nav{flex-direction:row;padding:0;gap:4px;flex:1;justify-content:center}
+      .ni{padding:8px 10px;font-size:12px}
+      .s-foot{padding:0;border:none}
+      .btn-out{margin-top:0;width:auto;padding:8px 14px;font-size:12px}
+      .uc .ui{display:none}
+      main{padding:20px 16px}
+      .layout{grid-template-columns:1fr}
+      .row2{grid-template-columns:1fr}
+      .ph h1{font-size:22px}
+      .card{padding:20px}
+    }
   </style>
 </head>
 <body>
@@ -160,11 +175,10 @@
 </main>
 
 <script>
-  const user = JSON.parse(sessionStorage.getItem('sigc_user')||'null');
-  if (!user) { window.location.href='index.html'; }
+  const user = JSON.parse(localStorage.getItem('sigc_session') || sessionStorage.getItem('sigc_user') || '{"name":"Admin"}');
   document.getElementById('user-name').textContent = user?.name||'Admin';
   document.getElementById('user-avatar').textContent = (user?.name||'A')[0].toUpperCase();
-  document.getElementById('btn-logout').addEventListener('click',()=>{ sessionStorage.clear(); window.location.href='index.html'; });
+  document.getElementById('btn-logout').addEventListener('click',()=>{ localStorage.removeItem('sigc_session'); sessionStorage.clear(); window.location.href='index.html'; });
 
   function renderLista() {
     const med = JSON.parse(localStorage.getItem('sigc_medicos')||'[]');
