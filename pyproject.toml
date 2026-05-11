@@ -1,0 +1,29 @@
+[tool.pytest.ini_options]
+testpaths = ["scripts"]
+python_files = ["test_*.py"]
+python_classes = ["*Test*", "*Tests*", "CP*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["scripts"]
+omit = [
+    "scripts/run_all_tests.py",
+    "scripts/requirements.txt"
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+# Umbrales de calidad Radon
+# CC (Complejidad Ciclomática):
+#   A (1-5)   → Bajo riesgo
+#   B (6-10)  → Moderado
+#   C (11-15) → Alto
+#   D (16-20) → Muy alto
+#   E/F (>20) → Crítico
+#
+# MI (Índice de Mantenibilidad):
+#   A (>20)   → Alta mantenibilidad
+#   B (10-20) → Mantenibilidad media
+#   C (<10)   → Baja mantenibilidad

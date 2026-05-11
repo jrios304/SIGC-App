@@ -1,0 +1,68 @@
+version: "2"
+
+# ── Plugins de análisis ───────────────────────────────────────────────────────
+plugins:
+  # Análisis de Python — complejidad ciclomática, mantenibilidad, code smells
+  radon:
+    enabled: true
+    config:
+      python_version: 3
+
+  # Detección de código duplicado
+  duplication:
+    enabled: true
+    config:
+      languages:
+        python:
+          mass_threshold: 40
+        javascript:
+          mass_threshold: 40
+
+  # Análisis de estilo Python (PEP8, convenciones)
+  pep8:
+    enabled: true
+
+  # Análisis de HTML
+  markdownlint:
+    enabled: false
+
+# ── Umbrales de métricas ──────────────────────────────────────────────────────
+checks:
+  argument-count:
+    config:
+      threshold: 5
+  complex-logic:
+    config:
+      threshold: 4
+  file-lines:
+    config:
+      threshold: 250
+  method-complexity:
+    config:
+      threshold: 10        # Complejidad ciclomática máxima por método
+  method-count:
+    config:
+      threshold: 20
+  method-lines:
+    config:
+      threshold: 50
+  nested-control-flow:
+    config:
+      threshold: 4         # Profundidad de anidación máxima
+  return-statements:
+    config:
+      threshold: 4
+  similar-code:
+    config:
+      threshold: 50
+  identical-code:
+    config:
+      threshold: 50
+
+# ── Exclusiones ───────────────────────────────────────────────────────────────
+exclude_patterns:
+  - "**/*.html"            # App frontend — analizada por separado
+  - "**/__pycache__/**"
+  - "**/.git/**"
+  - "**/node_modules/**"
+  - "scripts/requirements.txt"
