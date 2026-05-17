@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  # ── JOB 1: Pruebas unitarias JS con Jest + cobertura ──────────────────────
+  # ── JOB 1: Pruebas unitarias JS con Jest + cobertura a qlty.sh ────────────
   unit-tests-js:
     name: Pruebas Unitarias Jest
     runs-on: ubuntu-latest
@@ -24,12 +24,11 @@ jobs:
       - name: Ejecutar pruebas unitarias con cobertura
         run: npm test
 
-      - name: Instalar qlty CLI
-        run: npm install -g @qltysh/qlty
-
-      - name: Enviar reporte de cobertura a qlty.sh
-        run: qlty coverage publish --token=${{ secrets.QLTY_COVERAGE_TOKEN }} coverage/lcov.info
-        continue-on-error: true
+      - name: Enviar cobertura a qlty.sh
+        run: |
+          curl -L https://qlty.sh/install.sh | bash
+          export PATH="$HOME/.qlty/bin:$PATH"
+          qlty coverage publish --token=${{ secrets.QLTY_COVERAGE_TOKEN }} coverage/lcov.info
 
   # ── JOB 2: Análisis de calidad con Radon ──────────────────────────────────
   code-quality:
@@ -111,8 +110,9 @@ jobs:
         run: cd scripts && python run_all_tests.py
         continue-on-error: true
 
-      - name: Resumen
+      - name: Resumen del pipeline
         if: always()
         run: |
-          echo "Repo: ${{ github.repository }} | Commit: ${{ github.sha }}"
-          echo "Jobs: Jest (111) | Radon | Selenium (18)"
+          echo "Repo   : ${{ github.repository }}"
+          echo "Commit : ${{ github.sha }}"
+          echo "Jobs   : Jest (111) | Radon | Selenium (18)"
