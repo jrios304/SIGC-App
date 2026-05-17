@@ -1,4 +1,4 @@
-# SIGC — Sistema Integral de Gestión Clínica
+# SIGC — Sistema Integral de Gestión Clínica test pipeline
 
 Aplicación web de práctica para pruebas automatizadas con Selenium. Simula los módulos principales de un sistema de gestión clínica.
 
