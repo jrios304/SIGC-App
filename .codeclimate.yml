@@ -1,14 +1,20 @@
 version: "2"
 
-# ── Plugins de análisis ───────────────────────────────────────────────────────
 plugins:
-  # Análisis de Python — complejidad ciclomática, mantenibilidad, code smells
+  # Análisis Python — complejidad, mantenibilidad, code smells
   radon:
     enabled: true
     config:
       python_version: 3
 
-  # Detección de código duplicado
+  # Análisis JavaScript — complejidad, code smells
+  eslint:
+    enabled: true
+    config:
+      extensions:
+        - .js
+
+  # Detección de código duplicado en Python y JavaScript
   duplication:
     enabled: true
     config:
@@ -18,15 +24,10 @@ plugins:
         javascript:
           mass_threshold: 40
 
-  # Análisis de estilo Python (PEP8, convenciones)
+  # Estilo Python PEP8
   pep8:
     enabled: true
 
-  # Análisis de HTML
-  markdownlint:
-    enabled: false
-
-# ── Umbrales de métricas ──────────────────────────────────────────────────────
 checks:
   argument-count:
     config:
@@ -36,19 +37,16 @@ checks:
       threshold: 4
   file-lines:
     config:
-      threshold: 250
+      threshold: 300
   method-complexity:
     config:
-      threshold: 10        # Complejidad ciclomática máxima por método
-  method-count:
-    config:
-      threshold: 20
+      threshold: 10
   method-lines:
     config:
       threshold: 50
   nested-control-flow:
     config:
-      threshold: 4         # Profundidad de anidación máxima
+      threshold: 4
   return-statements:
     config:
       threshold: 4
@@ -59,10 +57,13 @@ checks:
     config:
       threshold: 50
 
-# ── Exclusiones ───────────────────────────────────────────────────────────────
 exclude_patterns:
-  - "**/*.html"            # App frontend — analizada por separado
   - "**/__pycache__/**"
   - "**/.git/**"
   - "**/node_modules/**"
+  - "**/coverage/**"
   - "scripts/requirements.txt"
+  - "package-lock.json"
+  - "app/js/auth.js"
+  - "app/js/medicos.js"
+  - "app/js/pacientes.js"

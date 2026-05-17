@@ -1,102 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>SIGC — Iniciar Sesión</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --navy: #0B1F3A; --teal: #0D7377; --teal2: #14A085;
-      --cream: #F5F0E8; --white: #FFFFFF; --red: #C0392B;
-      --red-bg: #FDECEA; --gray: #6B7280; --border: #D1D5DB;
-      --success: #16A34A; --warn: #B45309; --warn-bg: #FFF7ED;
-    }
-    body { font-family: 'DM Sans', sans-serif; background: var(--navy); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    body::before { content: ''; position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(13,115,119,0.2) 0%, transparent 65%); top: -200px; right: -200px; pointer-events: none; }
-    body::after { content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(13,115,119,0.12) 0%, transparent 65%); bottom: -150px; left: -150px; pointer-events: none; }
-    .wrapper { display: flex; width: 920px; min-height: 580px; border-radius: 24px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.5); position: relative; z-index: 1; animation: fadeUp 0.6s ease both; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-
-    /* ── Brand panel ── */
-    .brand { flex: 1; background: linear-gradient(155deg, var(--teal) 0%, #074a4d 100%); padding: 52px 44px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
-    .brand::before { content: '✚'; position: absolute; font-size: 400px; color: rgba(255,255,255,0.04); top: -80px; right: -60px; line-height: 1; pointer-events: none; }
-    .logo { display: flex; align-items: center; gap: 14px; }
-    .logo-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-    .logo-text { font-family: 'DM Serif Display', serif; font-size: 22px; color: #fff; line-height: 1.1; }
-    .logo-text span { display: block; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.6); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
-    .headline { color: #fff; }
-    .headline h1 { font-family: 'DM Serif Display', serif; font-size: 36px; line-height: 1.2; margin-bottom: 14px; }
-    .headline p { font-size: 14px; color: rgba(255,255,255,0.68); line-height: 1.7; }
-    .features { display: flex; flex-direction: column; gap: 12px; }
-    .feat { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.78); font-size: 13px; }
-    .feat-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.45); flex-shrink: 0; }
-
-    /* ── Form panel ── */
-    .form-side { flex: 1; background: var(--white); padding: 52px 44px; display: flex; flex-direction: column; justify-content: center; }
-    .form-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--navy); margin-bottom: 4px; }
-    .form-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
-
-    /* alerts */
-    .alert { padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 18px; display: none; align-items: flex-start; gap: 10px; line-height: 1.55; }
-    .alert.show { display: flex; }
-    .alert-error { background: var(--red-bg); border: 1px solid #fbbcb5; color: var(--red); }
-    .alert-warn  { background: var(--warn-bg); border: 1px solid #fcd7a0; color: var(--warn); }
-    .alert-ok    { background: #f0fdf4; border: 1px solid #86efac; color: var(--success); }
-    .alert-icon  { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-
-    /* attempts */
-    .attempts-bar { display: none; margin-bottom: 16px; }
-    .attempts-bar.show { display: block; }
-    .attempts-lbl { font-size: 12px; color: var(--warn); margin-bottom: 6px; font-weight: 500; }
-    .dots { display: flex; gap: 6px; }
-    .dot-item { width: 30px; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
-    .dot-item.used { background: var(--red); }
-
-    /* countdown */
-    .countdown { font-size: 28px; font-family: 'DM Serif Display', serif; color: var(--red); text-align: center; margin: 8px 0 4px; }
-
-    /* form elements */
-    .fg { margin-bottom: 20px; }
-    label { display: block; font-size: 13px; font-weight: 500; color: var(--navy); margin-bottom: 7px; }
-    input[type=email], input[type=password], input[type=text] { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--navy); background: #fafafa; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
-    input:focus { border-color: var(--teal); background: #fff; box-shadow: 0 0 0 3px rgba(13,115,119,0.1); }
-    input.err { border-color: var(--red) !important; background: var(--red-bg) !important; }
-    .field-err { font-size: 12px; color: var(--red); margin-top: 5px; display: none; }
-    .field-err.show { display: block; }
-
-    .btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 100%); color: #fff; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s; margin-top: 6px; box-shadow: 0 4px 16px rgba(13,115,119,0.28); letter-spacing: 0.02em; }
-    .btn:hover:not(:disabled) { opacity: 0.91; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(13,115,119,0.38); }
-    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-    .links { margin-top: 22px; text-align: center; font-size: 13px; color: var(--gray); }
-    .links a { color: var(--teal); text-decoration: none; font-weight: 500; }
-    .links a:hover { text-decoration: underline; }
-
-    /* session badge */
-    #session-badge { display: none; position: fixed; top: 20px; right: 20px; background: #fff; border-radius: 12px; padding: 10px 16px; box-shadow: 0 8px 28px rgba(0,0,0,0.12); font-size: 13px; color: var(--navy); z-index: 999; }
-    #session-badge.show { display: block; }
-    #session-timer { color: var(--red); font-weight: 600; }
-
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      body { align-items: flex-start; overflow-y: auto; padding: 0; }
-      .wrapper { flex-direction: column; width: 100%; min-height: 100vh; border-radius: 0; box-shadow: none; }
-      .brand { padding: 32px 24px 28px; }
-      .brand::before { font-size: 200px; top: -40px; right: -20px; }
-      .headline h1 { font-size: 26px; }
-      .features { display: none; }
-      .form-side { padding: 32px 24px 40px; }
-      .form-title { font-size: 22px; }
-      #session-badge { top: 10px; right: 10px; font-size: 12px; padding: 8px 12px; }
-    }
+    body{background:var(--navy);min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    body::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(13,115,119,.2) 0%,transparent 65%);top:-200px;right:-200px;pointer-events:none}
+    body::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(13,115,119,.12) 0%,transparent 65%);bottom:-150px;left:-150px;pointer-events:none}
+    .wrapper{display:flex;width:920px;min-height:580px;border-radius:24px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.5);position:relative;z-index:1;animation:fadeUp .6s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .brand{flex:1;background:linear-gradient(155deg,var(--teal) 0%,#074a4d 100%);padding:52px 44px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+    .brand::before{content:'✚';position:absolute;font-size:400px;color:rgba(255,255,255,.04);top:-80px;right:-60px;line-height:1;pointer-events:none}
+    .logo{display:flex;align-items:center;gap:14px}
+    .logo-icon{width:48px;height:48px;background:rgba(255,255,255,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
+    .logo-text{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;line-height:1.1}
+    .logo-text span{display:block;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;color:rgba(255,255,255,.6);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+    .headline{color:#fff}
+    .headline h1{font-family:'DM Serif Display',serif;font-size:36px;line-height:1.2;margin-bottom:14px}
+    .headline p{font-size:14px;color:rgba(255,255,255,.68);line-height:1.7}
+    .features{display:flex;flex-direction:column;gap:12px}
+    .feat{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.78);font-size:13px}
+    .feat-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);flex-shrink:0}
+    .form-side{flex:1;background:var(--white);padding:52px 44px;display:flex;flex-direction:column;justify-content:center}
+    .form-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy);margin-bottom:4px}
+    .form-sub{font-size:14px;color:var(--gray);margin-bottom:32px}
+    .attempts-bar{display:none;margin-bottom:16px}
+    .attempts-bar.show{display:block}
+    .attempts-lbl{font-size:12px;color:var(--warn);margin-bottom:6px;font-weight:500}
+    .dots{display:flex;gap:6px}
+    .dot-item{width:30px;height:6px;border-radius:3px;background:var(--border);transition:background .3s}
+    .dot-item.used{background:var(--red)}
+    .countdown{font-size:28px;font-family:'DM Serif Display',serif;color:var(--red);text-align:center;margin:8px 0 4px}
+    .links{margin-top:22px;text-align:center;font-size:13px;color:var(--gray)}
+    .links a{color:var(--teal);text-decoration:none;font-weight:500}
+    #session-badge{display:none;position:fixed;top:20px;right:20px;background:#fff;border-radius:12px;padding:10px 16px;box-shadow:0 8px 28px rgba(0,0,0,.12);font-size:13px;color:var(--navy);z-index:999}
+    #session-badge.show{display:block}
+    #session-timer{color:var(--red);font-weight:600}
+    @media(max-width:768px){body{align-items:flex-start;overflow-y:auto;padding:0}.wrapper{flex-direction:column;width:100%;min-height:100vh;border-radius:0;box-shadow:none}.brand{padding:32px 24px 28px}.headline h1{font-size:26px}.features{display:none}.form-side{padding:32px 24px 40px}.form-title{font-size:22px}}
   </style>
 </head>
 <body>
-
 <div class="wrapper">
-  <!-- Brand -->
   <div class="brand">
     <div class="logo">
       <div class="logo-icon">🏥</div>
@@ -114,18 +61,15 @@
     </div>
   </div>
 
-  <!-- Form -->
   <div class="form-side">
     <h2 class="form-title">Bienvenido</h2>
     <p class="form-sub">Ingresa tus credenciales para acceder al sistema.</p>
 
-    <!-- CP2-O: Credenciales inválidas -->
+    <!-- CP2-O: Alertas de autenticación -->
     <div id="alert-cred" class="alert alert-error">
       <span class="alert-icon">⚠️</span>
       <span id="alert-cred-msg">Credenciales inválidas. Verifica tu correo y contraseña.</span>
     </div>
-
-    <!-- CP2-O: Cuenta bloqueada -->
     <div id="alert-block" class="alert alert-warn">
       <span class="alert-icon">🔒</span>
       <div>
@@ -135,8 +79,6 @@
         Se envió una alerta de seguridad a tu correo registrado.
       </div>
     </div>
-
-    <!-- Login exitoso -->
     <div id="alert-ok" class="alert alert-ok">
       <span class="alert-icon">✅</span>
       <span>Acceso exitoso. Redirigiendo al Dashboard...</span>
@@ -155,12 +97,12 @@
     <form id="login-form" novalidate>
       <div class="fg">
         <label for="login-email">Correo electrónico</label>
-        <input type="email" id="login-email" data-testid="input-email" placeholder="admin@medical.com" autocomplete="off" />
+        <input type="email" id="login-email" data-testid="input-email" placeholder="admin@medical.com" autocomplete="off"/>
         <div class="field-err" id="err-email">Ingresa un correo electrónico válido.</div>
       </div>
       <div class="fg">
         <label for="login-pass">Contraseña</label>
-        <input type="password" id="login-pass" data-testid="input-password" placeholder="••••••••" />
+        <input type="password" id="login-pass" data-testid="input-password" placeholder="••••••••"/>
         <div class="field-err" id="err-pass">La contraseña es requerida.</div>
       </div>
       <button type="submit" class="btn" id="btn-login" data-testid="btn-login">Iniciar sesión</button>
@@ -172,142 +114,12 @@
   </div>
 </div>
 
-<!-- CP2-O: Badge sesión activa -->
 <div id="session-badge">🟢 Sesión activa — Expira en: <span id="session-timer">30:00</span></div>
 
-<script>
-  // ── Datos iniciales ───────────────────────────────────────────────────────
-  if (!localStorage.getItem('sigc_admins')) {
-    localStorage.setItem('sigc_admins', JSON.stringify([
-      { email: 'admin@medical.com', password: 'Sistemas2026*', name: 'Super Admin' }
-    ]));
-  }
-  if (!localStorage.getItem('sigc_medicos')) localStorage.setItem('sigc_medicos', JSON.stringify([]));
-  if (!localStorage.getItem('sigc_pacientes')) localStorage.setItem('sigc_pacientes', JSON.stringify([]));
-
-  // ── Estado CP2-O ──────────────────────────────────────────────────────────
-  let fails = parseInt(sessionStorage.getItem('sigc_fails') || '0');
-  let blocked = sessionStorage.getItem('sigc_blocked') === 'true';
-  let blockEnd = parseInt(sessionStorage.getItem('sigc_block_end') || '0');
-  let cdInterval = null;
-
-  const form = document.getElementById('login-form');
-  const btnLogin = document.getElementById('btn-login');
-
-  function hideAlerts() {
-    ['alert-cred','alert-block','alert-ok'].forEach(id => document.getElementById(id).classList.remove('show'));
-  }
-
-  function updateDots() {
-    for (let i = 1; i <= 3; i++) document.getElementById(`d${i}`).classList.toggle('used', i <= fails);
-    document.getElementById('attempts-lbl').textContent = `Intentos fallidos: ${fails} de 3`;
-    if (fails > 0) document.getElementById('attempts-bar').classList.add('show');
-  }
-
-  function startCountdown() {
-    clearInterval(cdInterval);
-    cdInterval = setInterval(() => {
-      const rem = Math.max(0, blockEnd - Date.now());
-      if (rem <= 0) {
-        clearInterval(cdInterval);
-        blocked = false; fails = 0;
-        sessionStorage.removeItem('sigc_blocked');
-        sessionStorage.removeItem('sigc_block_end');
-        sessionStorage.setItem('sigc_fails', '0');
-        hideAlerts();
-        document.getElementById('attempts-bar').classList.remove('show');
-        updateDots();
-        btnLogin.disabled = false;
-        return;
-      }
-      const m = String(Math.floor(rem / 60000)).padStart(2,'0');
-      const s = String(Math.floor((rem % 60000) / 1000)).padStart(2,'0');
-      document.getElementById('countdown').textContent = `${m}:${s}`;
-    }, 500);
-  }
-
-  // Revisar bloqueo existente al cargar
-  if (blocked && blockEnd > Date.now()) {
-    hideAlerts();
-    document.getElementById('alert-block').classList.add('show');
-    document.getElementById('attempts-bar').classList.add('show');
-    btnLogin.disabled = true;
-    updateDots();
-    startCountdown();
-  }
-
-  // ── Submit ────────────────────────────────────────────────────────────────
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    hideAlerts();
-    const email = document.getElementById('login-email').value.trim();
-    const pass  = document.getElementById('login-pass').value;
-    const eIn   = document.getElementById('login-email');
-    const pIn   = document.getElementById('login-pass');
-    const errE  = document.getElementById('err-email');
-    const errP  = document.getElementById('err-pass');
-
-    eIn.classList.remove('err'); pIn.classList.remove('err');
-    errE.classList.remove('show'); errP.classList.remove('show');
-
-    // Bloqueo activo
-    if (blocked && blockEnd > Date.now()) {
-      document.getElementById('alert-block').classList.add('show');
-      return;
-    }
-
-    let valid = true;
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { eIn.classList.add('err'); errE.classList.add('show'); valid = false; }
-    if (!pass) { pIn.classList.add('err'); errP.classList.add('show'); valid = false; }
-    if (!valid) return;
-
-    const admins = JSON.parse(localStorage.getItem('sigc_admins') || '[]');
-    const user = admins.find(u => u.email === email && u.password === pass);
-
-    if (user) {
-      fails = 0; sessionStorage.setItem('sigc_fails', '0');
-      sessionStorage.removeItem('sigc_blocked');
-      sessionStorage.setItem('sigc_user', JSON.stringify(user));
-      localStorage.setItem('sigc_session', JSON.stringify(user));
-      document.getElementById('alert-ok').classList.add('show');
-      btnLogin.disabled = true;
-      // CP2-O: temporizador de sesión 30 min
-      let secs = 30 * 60;
-      const badge = document.getElementById('session-badge');
-      const timerEl = document.getElementById('session-timer');
-      badge.classList.add('show');
-      const sInterval = setInterval(() => {
-        secs--;
-        const mm = String(Math.floor(secs/60)).padStart(2,'0');
-        const ss = String(secs%60).padStart(2,'0');
-        timerEl.textContent = `${mm}:${ss}`;
-        if (secs <= 0) { clearInterval(sInterval); sessionStorage.clear(); location.reload(); }
-      }, 1000);
-      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1800);
-    } else {
-      fails++;
-      sessionStorage.setItem('sigc_fails', String(fails));
-      eIn.classList.add('err'); pIn.classList.add('err');
-      updateDots();
-      if (fails >= 3) {
-        blocked = true;
-        // 15 segundos para pruebas (en prod serían 15 * 60 * 1000)
-        blockEnd = Date.now() + 15000;
-        sessionStorage.setItem('sigc_blocked', 'true');
-        sessionStorage.setItem('sigc_block_end', String(blockEnd));
-        hideAlerts();
-        document.getElementById('alert-block').classList.add('show');
-        document.getElementById('attempts-bar').classList.add('show');
-        btnLogin.disabled = true;
-        startCountdown();
-      } else {
-        const rem = 3 - fails;
-        document.getElementById('alert-cred-msg').textContent =
-          `Credenciales inválidas. Te quedan ${rem} intento${rem !== 1 ? 's' : ''} antes del bloqueo.`;
-        document.getElementById('alert-cred').classList.add('show');
-      }
-    }
-  });
-</script>
+<!-- Módulos JS desacoplados -->
+<script src="js/storage.js"></script>
+<script src="js/validaciones.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

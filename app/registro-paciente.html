@@ -3,74 +3,15 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>SIGC — Registro de Paciente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--navy:#0B1F3A;--teal:#0D7377;--teal2:#14A085;--white:#fff;--gray:#6B7280;--border:#E5E7EB;--red:#C0392B;--red-bg:#FDECEA;--success:#16A34A}
-    body{font-family:'DM Sans',sans-serif;background:#F0F4F8;min-height:100vh;display:flex}
-    .sidebar{width:256px;background:var(--navy);display:flex;flex-direction:column;padding:28px 0;flex-shrink:0}
-    .s-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .s-logo .nm{font-family:'DM Serif Display',serif;font-size:18px;color:#fff}
-    .s-logo .sb{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-    .s-nav{padding:20px 16px;flex:1;display:flex;flex-direction:column;gap:4px}
-    .ni{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.6);font-size:14px;font-weight:500;text-decoration:none;transition:background .2s,color .2s}
-    .ni:hover,.ni.active{background:rgba(13,115,119,.35);color:#fff}
-    .ni .ic{font-size:17px;width:22px;text-align:center}
-    .s-foot{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08)}
-    .uc{display:flex;align-items:center;gap:10px}
-    .ua{width:36px;height:36px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600}
-    .ui .un{font-size:13px;color:#fff;font-weight:500}
-    .ui .ur{font-size:11px;color:rgba(255,255,255,.4)}
-    .btn-out{margin-top:12px;width:100%;padding:9px;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.35);color:#e07070;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500}
+    body{background:var(--bg);min-height:100vh;display:flex}
     main{flex:1;padding:36px 40px;overflow-y:auto}
-    .ph{margin-bottom:28px}
-    .ph h1{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)}
-    .ph p{font-size:14px;color:var(--gray)}
+    .ph{margin-bottom:28px}.ph h1{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)}.ph p{font-size:14px;color:var(--gray)}
     .layout{display:grid;grid-template-columns:1fr 340px;gap:24px}
-    .card{background:var(--white);border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--border)}
-    .card-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-    .alert{padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:18px;display:none;align-items:flex-start;gap:10px;line-height:1.55}
-    .alert.show{display:flex}
-    .alert-error{background:var(--red-bg);border:1px solid #fbbcb5;color:var(--red)}
-    .alert-ok{background:#f0fdf4;border:1px solid #86efac;color:var(--success)}
-    .alert-warn{background:#fff7ed;border:1px solid #fcd7a0;color:#b45309}
-    .alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-    .fg{margin-bottom:18px}
-    label{display:block;font-size:13px;font-weight:500;color:var(--navy);margin-bottom:7px}
-    input,select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);background:#fafafa;transition:border-color .2s,box-shadow .2s;outline:none;appearance:none}
-    input:focus,select:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(13,115,119,.1)}
-    input.err,select.err{border-color:var(--red)!important;background:var(--red-bg)!important}
-    .field-err{font-size:12px;color:var(--red);margin-top:5px;display:none}
-    .field-err.show{display:block}
-    .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-    .btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--teal) 0%,var(--teal2) 100%);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;box-shadow:0 4px 16px rgba(13,115,119,.28)}
-    .btn:hover:not(:disabled){opacity:.91;transform:translateY(-1px)}
-    .btn:disabled{opacity:.45;cursor:not-allowed}
-    /* CP5-O: Resaltado de campos XSS sanitizados */
-    .xss-warn{font-size:12px;color:#b45309;margin-top:5px;display:none}
-    .xss-warn.show{display:block}
-    .list-item{padding:12px 14px;border-radius:10px;border:1px solid var(--border);margin-bottom:10px;font-size:13px;color:var(--navy)}
-    .li-name{font-weight:600;margin-bottom:2px}
-    .li-sub{color:var(--gray);font-size:12px}
-    .empty-list{color:#9CA3AF;font-size:13px;text-align:center;padding:20px 0}
-    .req-note{font-size:12px;color:var(--gray);margin-bottom:20px;font-style:italic}
-    @media(max-width:768px){
-      body{flex-direction:column}
-      .sidebar{width:100%;flex-direction:row;align-items:center;padding:12px 16px;flex-wrap:wrap;gap:8px}
-      .s-logo{padding:0;border:none}
-      .s-nav{flex-direction:row;padding:0;gap:4px;flex:1;justify-content:center}
-      .ni{padding:8px 10px;font-size:12px}
-      .s-foot{padding:0;border:none}
-      .btn-out{margin-top:0;width:auto;padding:8px 14px;font-size:12px}
-      .uc .ui{display:none}
-      main{padding:20px 16px}
-      .layout{grid-template-columns:1fr}
-      .row2{grid-template-columns:1fr}
-      .row3{grid-template-columns:1fr}
-      .ph h1{font-size:22px}
-      .card{padding:20px}
-    }
+    @media(max-width:768px){main{padding:20px 16px}.layout{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -90,215 +31,44 @@
     <button class="btn-out" id="btn-logout" data-testid="btn-logout">Cerrar sesión</button>
   </div>
 </div>
-
 <main>
-  <div class="ph">
-    <h1>Gestión de Pacientes</h1>
-    <p>Registra y administra los datos de los pacientes del sistema.</p>
-  </div>
-
+  <div class="ph"><h1>Gestión de Pacientes</h1><p>Registra y administra los datos de los pacientes del sistema.</p></div>
   <div class="layout">
     <div class="card">
       <h2 class="card-title">Registrar nuevo paciente</h2>
       <p class="req-note">Los campos marcados con * son obligatorios.</p>
-
-      <!-- CP4-O: Duplicidad ID -->
-      <div id="alert-dup-id" class="alert alert-error">
-        <span class="alert-icon">⚠️</span>
-        <span id="msg-dup-id">El número de identificación ya se encuentra registrado en el sistema.</span>
-      </div>
-      <!-- CP5-O: XSS sanitizado -->
-      <div id="alert-xss" class="alert alert-warn">
-        <span class="alert-icon">🛡️</span>
-        <span>Se detectaron caracteres potencialmente peligrosos en los datos ingresados. Los valores han sido sanitizados automáticamente.</span>
-      </div>
-      <!-- Éxito -->
-      <div id="alert-ok" class="alert alert-ok">
-        <span class="alert-icon">✅</span>
-        <span>Paciente registrado exitosamente.</span>
-      </div>
-
+      <div id="alert-dup-id" class="alert alert-error"><span class="alert-icon">⚠️</span><span id="msg-dup-id">El número de identificación ya se encuentra registrado.</span></div>
+      <div id="alert-xss" class="alert alert-warn"><span class="alert-icon">🛡️</span><span>Se detectaron caracteres potencialmente peligrosos. Los valores han sido sanitizados automáticamente.</span></div>
+      <div id="alert-ok" class="alert alert-ok"><span class="alert-icon">✅</span><span>Paciente registrado exitosamente.</span></div>
       <form id="form-paciente" novalidate>
         <div class="row2">
-          <div class="fg">
-            <!-- CP5-O: Campo obligatorio nombre -->
-            <label for="pac-nombre">Nombre del Paciente *</label>
-            <input type="text" id="pac-nombre" data-testid="input-nombre-paciente" placeholder="Ej: María García"/>
-            <div class="field-err" id="err-nombre">Este campo es obligatorio.</div>
-            <!-- CP5-O: Advertencia XSS -->
-            <div class="xss-warn" id="xss-nombre">⚠ Caracteres especiales detectados y sanitizados.</div>
-          </div>
-          <div class="fg">
-            <label for="pac-apellido">Apellidos *</label>
-            <input type="text" id="pac-apellido" data-testid="input-apellido-paciente" placeholder="Ej: López Ruiz"/>
-            <div class="field-err" id="err-apellido">Este campo es obligatorio.</div>
-          </div>
+          <div class="fg"><label for="pac-nombre">Nombre del Paciente *</label><input type="text" id="pac-nombre" data-testid="input-nombre-paciente" placeholder="Ej: María García"/><div class="field-err" id="err-nombre">Este campo es obligatorio.</div><div class="xss-warn" id="xss-nombre">⚠ Caracteres especiales detectados y sanitizados.</div></div>
+          <div class="fg"><label for="pac-apellido">Apellidos *</label><input type="text" id="pac-apellido" data-testid="input-apellido-paciente" placeholder="Ej: López Ruiz"/><div class="field-err" id="err-apellido">Este campo es obligatorio.</div></div>
         </div>
-
         <div class="row3">
-          <div class="fg">
-            <label for="pac-tipo-id">Tipo de ID *</label>
-            <select id="pac-tipo-id" data-testid="input-tipo-id">
-              <option value="">-- Selecciona --</option>
-              <option>Cédula de ciudadanía</option>
-              <option>Tarjeta de identidad</option>
-              <option>Pasaporte</option>
-              <option>Cédula extranjería</option>
-            </select>
-            <div class="field-err" id="err-tipo-id">Selecciona un tipo de ID.</div>
-          </div>
-          <div class="fg">
-            <!-- CP4-O: ID duplicado -->
-            <label for="pac-id">Número de identificación *</label>
-            <input type="text" id="pac-id" data-testid="input-id-paciente" placeholder="Ej: 123456"/>
-            <div class="field-err" id="err-id">El número de identificación es requerido.</div>
-          </div>
-          <div class="fg">
-            <label for="pac-fecha">Fecha de nacimiento *</label>
-            <input type="date" id="pac-fecha" data-testid="input-fecha-nacimiento"/>
-            <div class="field-err" id="err-fecha">La fecha de nacimiento es requerida.</div>
-          </div>
+          <div class="fg"><label for="pac-tipo-id">Tipo de ID *</label><select id="pac-tipo-id" data-testid="input-tipo-id"><option value="">-- Selecciona --</option><option>Cédula de ciudadanía</option><option>Tarjeta de identidad</option><option>Pasaporte</option><option>Cédula extranjería</option></select><div class="field-err" id="err-tipo-id">Selecciona un tipo de ID.</div></div>
+          <div class="fg"><label for="pac-id">Número de identificación *</label><input type="text" id="pac-id" data-testid="input-id-paciente" placeholder="Ej: 123456"/><div class="field-err" id="err-id">El número de identificación es requerido.</div></div>
+          <div class="fg"><label for="pac-fecha">Fecha de nacimiento *</label><input type="date" id="pac-fecha" data-testid="input-fecha-nacimiento"/><div class="field-err" id="err-fecha">La fecha de nacimiento es requerida.</div></div>
         </div>
-
         <div class="row2">
-          <div class="fg">
-            <label for="pac-telefono">Teléfono *</label>
-            <input type="tel" id="pac-telefono" data-testid="input-telefono" placeholder="Ej: 3001234567"/>
-            <div class="field-err" id="err-telefono">Ingresa un número de teléfono válido (10 dígitos).</div>
-          </div>
-          <div class="fg">
-            <label for="pac-email">Correo electrónico</label>
-            <input type="email" id="pac-email" data-testid="input-email-paciente" placeholder="paciente@correo.com"/>
-            <div class="field-err" id="err-email">Formato de correo inválido.</div>
-          </div>
+          <div class="fg"><label for="pac-telefono">Teléfono *</label><input type="tel" id="pac-telefono" data-testid="input-telefono" placeholder="Ej: 3001234567"/><div class="field-err" id="err-telefono">Ingresa un número de teléfono válido (10 dígitos).</div></div>
+          <div class="fg"><label for="pac-email">Correo electrónico</label><input type="email" id="pac-email" data-testid="input-email-paciente" placeholder="paciente@correo.com"/><div class="field-err" id="err-email">Formato de correo inválido.</div></div>
         </div>
-
-        <div class="fg">
-          <label for="pac-eps">EPS / Entidad de salud *</label>
-          <select id="pac-eps" data-testid="input-eps">
-            <option value="">-- Selecciona --</option>
-            <option>Sanitas</option>
-            <option>Compensar</option>
-            <option>Nueva EPS</option>
-            <option>Sura</option>
-            <option>Coosalud</option>
-            <option>Famisanar</option>
-            <option>Particular</option>
-          </select>
-          <div class="field-err" id="err-eps">Selecciona una EPS.</div>
-        </div>
-
-        <div class="fg">
-          <label for="pac-direccion">Dirección de residencia *</label>
-          <input type="text" id="pac-direccion" data-testid="input-direccion" placeholder="Ej: Calle 45 #12-30, Bogotá"/>
-          <div class="field-err" id="err-direccion">La dirección es requerida.</div>
-        </div>
-
-        <button type="submit" class="btn" id="btn-registrar-paciente" data-testid="btn-registrar-paciente">
-          Registrar paciente
-        </button>
+        <div class="fg"><label for="pac-eps">EPS / Entidad de salud *</label><select id="pac-eps" data-testid="input-eps"><option value="">-- Selecciona --</option><option>Sanitas</option><option>Compensar</option><option>Nueva EPS</option><option>Sura</option><option>Coosalud</option><option>Famisanar</option><option>Particular</option></select><div class="field-err" id="err-eps">Selecciona una EPS.</div></div>
+        <div class="fg"><label for="pac-direccion">Dirección de residencia *</label><input type="text" id="pac-direccion" data-testid="input-direccion" placeholder="Ej: Calle 45 #12-30, Bogotá"/><div class="field-err" id="err-direccion">La dirección es requerida.</div></div>
+        <button type="submit" class="btn" id="btn-registrar-paciente" data-testid="btn-registrar-paciente">Registrar paciente</button>
       </form>
     </div>
-
-    <!-- Lista -->
     <div class="card">
       <h2 class="card-title">Pacientes registrados</h2>
       <div id="lista-pacientes"><div class="empty-list">No hay pacientes registrados aún.</div></div>
     </div>
   </div>
 </main>
-
-<script>
-  const user = JSON.parse(localStorage.getItem('sigc_session') || sessionStorage.getItem('sigc_user') || '{"name":"Admin"}');
-  document.getElementById('user-name').textContent = user?.name||'Admin';
-  document.getElementById('user-avatar').textContent = (user?.name||'A')[0].toUpperCase();
-  document.getElementById('btn-logout').addEventListener('click',()=>{ localStorage.removeItem('sigc_session'); sessionStorage.clear(); window.location.href='index.html'; });
-
-  // CP5-O: Función de sanitización XSS
-  function sanitize(str) {
-    const map = { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;','`':'&#x60;' };
-    return str.replace(/[&<>"'`]/g, m => map[m]);
-  }
-  function containsXSS(str) {
-    return /[<>"'`]|script|javascript|onerror|onload/i.test(str);
-  }
-
-  function renderLista() {
-    const pac = JSON.parse(localStorage.getItem('sigc_pacientes')||'[]');
-    const lista = document.getElementById('lista-pacientes');
-    if (pac.length === 0) { lista.innerHTML='<div class="empty-list">No hay pacientes registrados aún.</div>'; return; }
-    lista.innerHTML = pac.slice().reverse().map(p =>
-      `<div class="list-item"><div class="li-name">🧑‍🤝‍🧑 ${p.nombre} ${p.apellido}</div><div class="li-sub">ID: ${p.id} — ${p.eps}</div></div>`
-    ).join('');
-  }
-  renderLista();
-
-  document.getElementById('form-paciente').addEventListener('submit', e => {
-    e.preventDefault();
-    ['alert-dup-id','alert-xss','alert-ok'].forEach(id => document.getElementById(id).classList.remove('show'));
-
-    const fields = {
-      nombre:    document.getElementById('pac-nombre').value.trim(),
-      apellido:  document.getElementById('pac-apellido').value.trim(),
-      tipoId:    document.getElementById('pac-tipo-id').value,
-      id:        document.getElementById('pac-id').value.trim(),
-      fecha:     document.getElementById('pac-fecha').value,
-      telefono:  document.getElementById('pac-telefono').value.trim(),
-      email:     document.getElementById('pac-email').value.trim(),
-      eps:       document.getElementById('pac-eps').value,
-      direccion: document.getElementById('pac-direccion').value.trim(),
-    };
-
-    // Reset errors
-    ['pac-nombre','pac-apellido','pac-tipo-id','pac-id','pac-fecha','pac-telefono','pac-email','pac-eps','pac-direccion']
-      .forEach(id => document.getElementById(id).classList.remove('err'));
-    ['err-nombre','err-apellido','err-tipo-id','err-id','err-fecha','err-telefono','err-email','err-eps','err-direccion','xss-nombre']
-      .forEach(id => document.getElementById(id).classList.remove('show'));
-
-    let ok = true;
-    let xssDetected = false;
-
-    // CP5-O: Detección y sanitización XSS en nombre
-    if (containsXSS(fields.nombre)) {
-      xssDetected = true;
-      fields.nombre = sanitize(fields.nombre);
-      document.getElementById('xss-nombre').classList.add('show');
-    }
-
-    // CP5-O: Validación de campos obligatorios
-    if (!fields.nombre)   { document.getElementById('pac-nombre').classList.add('err'); document.getElementById('err-nombre').classList.add('show'); ok=false; }
-    if (!fields.apellido) { document.getElementById('pac-apellido').classList.add('err'); document.getElementById('err-apellido').classList.add('show'); ok=false; }
-    if (!fields.tipoId)   { document.getElementById('pac-tipo-id').classList.add('err'); document.getElementById('err-tipo-id').classList.add('show'); ok=false; }
-    if (!fields.id)       { document.getElementById('pac-id').classList.add('err'); document.getElementById('err-id').classList.add('show'); ok=false; }
-    if (!fields.fecha)    { document.getElementById('pac-fecha').classList.add('err'); document.getElementById('err-fecha').classList.add('show'); ok=false; }
-    if (!fields.telefono || !/^\d{7,10}$/.test(fields.telefono)) { document.getElementById('pac-telefono').classList.add('err'); document.getElementById('err-telefono').classList.add('show'); ok=false; }
-    if (fields.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) { document.getElementById('pac-email').classList.add('err'); document.getElementById('err-email').classList.add('show'); ok=false; }
-    if (!fields.eps)      { document.getElementById('pac-eps').classList.add('err'); document.getElementById('err-eps').classList.add('show'); ok=false; }
-    if (!fields.direccion){ document.getElementById('pac-direccion').classList.add('err'); document.getElementById('err-direccion').classList.add('show'); ok=false; }
-
-    if (!ok) return;
-
-    if (xssDetected) {
-      document.getElementById('alert-xss').classList.add('show');
-    }
-
-    const pacientes = JSON.parse(localStorage.getItem('sigc_pacientes')||'[]');
-
-    // CP4-O: Duplicidad de ID de paciente
-    if (pacientes.find(p => p.id === fields.id)) {
-      document.getElementById('pac-id').classList.add('err');
-      document.getElementById('msg-dup-id').textContent = `El número de identificación ${fields.id} ya se encuentra registrado en el sistema.`;
-      document.getElementById('alert-dup-id').classList.add('show');
-      return;
-    }
-
-    pacientes.push(fields);
-    localStorage.setItem('sigc_pacientes', JSON.stringify(pacientes));
-    document.getElementById('alert-ok').classList.add('show');
-    document.getElementById('form-paciente').reset();
-    renderLista();
-    setTimeout(() => document.getElementById('alert-ok').classList.remove('show'), 3000);
-  });
-</script>
+<script src="js/storage.js"></script>
+<script src="js/validaciones.js"></script>
+<script src="js/seguridad.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/registro-paciente.js"></script>
 </body>
 </html>

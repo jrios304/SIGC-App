@@ -1,29 +1,36 @@
 [tool.pytest.ini_options]
 testpaths = ["scripts"]
 python_files = ["test_*.py"]
-python_classes = ["*Test*", "*Tests*", "CP*"]
+python_classes = ["CP*", "*Test*"]
 python_functions = ["test_*"]
 
 [tool.coverage.run]
 source = ["scripts"]
 omit = [
     "scripts/run_all_tests.py",
-    "scripts/requirements.txt"
+    "scripts/test_*.py",
 ]
 
 [tool.coverage.report]
 show_missing = true
 skip_covered = false
 
-# Umbrales de calidad Radon
-# CC (Complejidad Ciclomática):
-#   A (1-5)   → Bajo riesgo
-#   B (6-10)  → Moderado
-#   C (11-15) → Alto
-#   D (16-20) → Muy alto
+# ── Umbrales de referencia ────────────────────────────────────────────────────
+#
+# Radon — Complejidad Ciclomática (CC):
+#   A (1-5)   → Bajo riesgo     ← objetivo del proyecto
+#   B (6-10)  → Riesgo moderado
+#   C (11-15) → Alto riesgo
+#   D (16-20) → Muy alto riesgo
 #   E/F (>20) → Crítico
 #
-# MI (Índice de Mantenibilidad):
-#   A (>20)   → Alta mantenibilidad
-#   B (10-20) → Mantenibilidad media
-#   C (<10)   → Baja mantenibilidad
+# Radon — Índice de Mantenibilidad (MI):
+#   A (>20)   → Alta mantenibilidad  ← objetivo del proyecto
+#   B (10-20) → Media
+#   C (<10)   → Baja — refactorizar
+#
+# Jest — Cobertura de código JS:
+#   Statements : objetivo ≥ 90%
+#   Branches   : objetivo ≥ 80%
+#   Functions  : objetivo ≥ 95%
+#   Lines      : objetivo ≥ 95%

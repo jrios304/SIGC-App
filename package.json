@@ -1,0 +1,30 @@
+{
+  "name": "sigc-v2",
+  "version": "2.0.0",
+  "description": "SIGC — Pruebas unitarias con Jest",
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "app/js/validaciones.js",
+      "app/js/seguridad.js",
+      "app/js/storage.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "coverageDirectory": "coverage"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}

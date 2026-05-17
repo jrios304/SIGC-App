@@ -1,2 +1,7 @@
 selenium
 webdriver-manager
+pytest
+pytest-cov
+coverage
+radon
+pycodestyle
